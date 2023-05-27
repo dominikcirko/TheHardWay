@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
@@ -14,18 +15,28 @@ public class AccountServiceImpl implements AccountService {
     public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
+
     @Override
-    public Account createAccount(Account account){
-        return accountRepository.save(account);
+    public Optional<Account> createAccount(Account account) {
+        return Optional.of(accountRepository.save(account));
     }
+
     @Override
-    public void deleteAccount(Long id){
+    public void deleteAccount(Long id) {
         accountRepository.deleteById(id);
     }
+
     @Override
-    public Optional<Account> findAccountById(Long id){
-        return accountRepository.findById(id);
+    public Optional<Account> findAccountByUsername(String username) {
+        return accountRepository.findByUsername(username);
     }
+
+    @Override
+    public Optional<Account> findByEmail(String email) {
+        return accountRepository.findByEmail(email);
+    }
+
+    ;
 
     @Override
     public List<Account> getAllAccounts() {

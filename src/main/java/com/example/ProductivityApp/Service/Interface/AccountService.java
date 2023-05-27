@@ -7,12 +7,14 @@ import java.util.Optional;
 
 public interface AccountService {
 
-   Account createAccount(Account account);
+    Optional<Account> createAccount(Account account);
 
-   void deleteAccount(Long id);
+    void deleteAccount(Long id);
 
-   Optional<Account> findAccountById(Long id);
+    Optional<Account> findAccountByUsername(String username);
 
-   List<Account> getAllAccounts();
+    Optional<Account> findByEmail(String email);
+
+    List<Account> getAllAccounts();
 
 }

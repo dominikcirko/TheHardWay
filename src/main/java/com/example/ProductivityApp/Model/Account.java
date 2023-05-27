@@ -3,7 +3,7 @@ package com.example.ProductivityApp.Model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="accounts")
+@Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,11 +27,14 @@ public class Account {
         this.pointCount = pointCount;
         this.addToGroup = addToGroup;
     }
-    public Account() {}
+
+    public Account() {
+    }
 
     public long getAccountId() {
         return accountId;
     }
+
     public String getUsername() {
         return username;
     }
