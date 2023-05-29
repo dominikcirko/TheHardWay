@@ -20,7 +20,7 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Optional<Account>> RegisterUser(@RequestBody Account account) {
+    public ResponseEntity<Optional<Account>> registerUser(@RequestBody Account account) {
         Optional<Account> usernameFound = accountService.findAccountByUsername(account.getUsername());
         Optional<Account> emailFound = accountService.findByEmail(account.getEmail());
         //if account with entered username or email already exist, return CONFLICT
@@ -32,20 +32,24 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Account> deleteAccount(@PathVariable Long id) {
-        accountService.deleteAccount(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Account> deleteAccount(@PathVariable Optional<Long> id) {
+        if (id.isPresent()) {
+            accountService.deleteAccount(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Optional<Account>> LoginUser(@RequestBody Account account) {
-        Optional<Account> accountOptional = accountService.findAccountByUsername(account.getUsername());
-        if (accountOptional.isPresent()) {
-            Account accountFound = accountOptional.get();
-            //if user's entered credentials and credentials from account found in db match, then return it
+    public ResponseEntity<Optional<Account>> loginUser(@RequestBody Account account) {
+        Optional<Account> findAccount = accountService.findAccountByUsername(account.getUsername());
+        if (findAccount.isPresent()) {
+            Account accountFound = findAccount.get();
+            //if user's entered credentials and credentials from account found in db match, then return account
             //otherwise, return empty Optional + 401 UNAUTHORIZED
             if (account.getPassword().equals(accountFound.getPassword()) && account.getEmail().equals(accountFound.getEmail())) {
-                return new ResponseEntity<>(accountOptional, HttpStatus.FOUND);
+                return new ResponseEntity<>(findAccount, HttpStatus.FOUND);
             }
         }
         return new ResponseEntity<>(Optional.empty(), HttpStatus.UNAUTHORIZED);
@@ -53,7 +57,7 @@ public class AccountController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Account>> getAllAccounts() {
-        return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.FOUND);
+        return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.OK);
     }
 
 }

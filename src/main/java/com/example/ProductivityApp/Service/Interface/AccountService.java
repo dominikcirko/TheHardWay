@@ -9,7 +9,7 @@ public interface AccountService {
 
     Optional<Account> createAccount(Account account);
 
-    void deleteAccount(Long id);
+    void deleteAccount(Optional<Long> id);
 
     Optional<Account> findAccountByUsername(String username);
 

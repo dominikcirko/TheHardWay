@@ -22,8 +22,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(Long id) {
-        accountRepository.deleteById(id);
+    public void deleteAccount(Optional<Long> id) {
+        accountRepository.deleteById(id.get());
     }
 
     @Override
@@ -35,8 +35,6 @@ public class AccountServiceImpl implements AccountService {
     public Optional<Account> findByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
-
-    ;
 
     @Override
     public List<Account> getAllAccounts() {
